@@ -12,26 +12,35 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.DriverManager;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"ra.demovideo"})
-@PropertySource("classpath:upload.properties")
+@PropertySource({"classpath:upload.properties","classpath:application.properties"})
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
     @Value("${upload-path}")
     private  String pathUpload;
+    @Value("${datasource-driver}")
+    private String driver;
+    @Value("${datasource-url}")
+    private String url;
+    @Value("${datasource-username}")
+    private String username;
+    @Value("${datasource-password}")
+    private String password;
     private ApplicationContext applicationContext;
 
     @Override
@@ -80,6 +89,15 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
         registry.addResourceHandler("/video/**")
                 .addResourceLocations("file:"+pathUpload);
 
+    }
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return dataSource;
     }
 }
 

@@ -24,9 +24,9 @@
         <td th:text="${loop.count}"></td>
         <td>
             <video th:src="@{|/video/${v.videoUrl}|}" controls></video></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td th:text="${v.title}"></td>
+        <td><a href="">Edit</a></td>
+        <td><a onclick="return confirm('Are u want to delete this item ?')" th:href="@{|/delete/${v.id}|}">Delete</a></td>
     </tr>
 </table>
 </body>

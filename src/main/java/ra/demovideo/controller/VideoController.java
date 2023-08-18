@@ -6,10 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ra.demovideo.model.Video;
 import ra.demovideo.model.VideoDto;
@@ -56,5 +53,10 @@ public class VideoController {
         newVideo.setDescription(videoDto.getDescription());
         videoService.save(newVideo);
        return "redirect:/";
+    }
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+        videoService.delete(id);
+        return "redirect:/";
     }
 }
